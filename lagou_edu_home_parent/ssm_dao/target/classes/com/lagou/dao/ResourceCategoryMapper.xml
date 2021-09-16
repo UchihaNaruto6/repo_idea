@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lagou.dao.ResourceCategoryMapper">
+    <!--查询所有资源分类信息-->
+    <select id="findAllResourceCategory" resultType="com.lagou.domain.ResourceCategory">
+        select * from resource_category
+    </select>
+    <!--添加资源分类信息-->
+    <select id="saveResourceCategory" parameterType="com.lagou.domain.ResourceCategory">
+        insert into resource_category values (null ,#{name},#{sort},#{createdTime},#{updatedTime},#{createdBy},#{updatedBy})
+    </select>
+    <!--修改资源分类信息-->
+    <update id="updateResourceCategory" parameterType="com.lagou.domain.ResourceCategory">
+        update resource_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="sort!=null and sort!=''">
+                sort=#{sort},
+            </if>
+            <if test="createdTime!=null">
+                created_time=#{createdTime},
+            </if>
+            <if test="updatedTime!=null">
+                updated_time=#{updatedTime},
+            </if>
+            <if test="createdBy!=null">
+                created_by=#{createdBy},
+            </if>
+            <if test="updatedBy!=null">
+                updated_by=#{updatedBy},
+            </if>
+        </trim>
+        <where>
+            <if test="id != null and id != '' ">id = #{id}</if>
+        </where>
+    </update>
+    <!--删除资源分类-->
+    <delete id="deleteResourceCategpry" parameterType="int">
+        delete from resource_category where id=#{id}
+    </delete>
+    <!--根据资源分类id查询资源信息-->
+    <resultMap id="resourceMap" type="com.lagou.domain.ResourceCategory">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sort" column="sort"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="updatedBy" column="updated_by"/>
+        <collection property="resources" ofType="com.lagou.domain.Resource">
+            <id column="rid" property="id"/>
+            <result column="rname" property="name"/>
+            <result column="url" property="url"/>
+            <result column="category_id" property="categoryId"/>
+            <result column="description" property="description"/>
+            <result column="rcreated_time" property="createdTime"/>
+            <result column="rupdated_time" property="updatedTime"/>
+            <result column="rcreated_by" property="createdBy"/>
+            <result column="rupdated_by" property="updatedBy"/>
+        </collection>
+    </resultMap>
+    <select id="findResourceByResourceCategoryId" resultMap="resourceMap" parameterType="int">
+        SELECT rc.*,r.id rid,r.name rname, r.url,r.category_id,r.`description`,r.`created_time` rcreated_time,r.`updated_time` rupdated_time,r.`created_by` rcreated_by,r.`updated_by` rupdated_by
+        FROM resource_category rc
+        LEFT JOIN resource r ON rc.id=r.category_id
+        WHERE rc.id=#{category_id}
+    </select>
+</mapper>

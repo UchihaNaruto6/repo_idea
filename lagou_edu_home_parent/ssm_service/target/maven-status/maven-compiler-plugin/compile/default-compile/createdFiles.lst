@@ -1,0 +1,10 @@
+com\lagou\service\impl\CourseContentServiceImp.class
+com\lagou\service\impl\TestServiceImp.class
+com\lagou\service\impl\CourseServiceImp.class
+com\lagou\service\PromotionSpaceService.class
+com\lagou\service\CourseContentService.class
+com\lagou\service\PromotionAdService.class
+com\lagou\service\impl\PromotionSpaceServiceImp.class
+com\lagou\service\impl\PromotionAdServiceImp.class
+com\lagou\service\CourseService.class
+com\lagou\service\TestService.class
